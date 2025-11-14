@@ -27,7 +27,7 @@ function TableroJuego() {
 
     useEffect(() => {
         if (estadoJuego === 'ganado') {
-            setTimeout(() => navigate('/'), 2000); // Redirigir después de 2 segundos para mostrar el mensaje
+            setTimeout(() => navigate('/juego'), 2000);
         }
     }, [estadoJuego, navigate]);
 
@@ -80,49 +80,73 @@ function TableroJuego() {
         return resultado;
     };
 
-    const getColor = (estado) => {
+    const getCellClasses = (estado) => {
         switch (estado) {
-            case 'correcto': return 'green';
-            case 'presente': return 'yellow';
-            case 'ausente': return 'gray';
-            default: return 'white';
+            case 'correcto':
+                return 'bg-green-500 text-white border-green-500';
+            case 'presente':
+                return 'bg-yellow-400 text-white border-yellow-400';
+            case 'ausente':
+                return 'bg-white text-gray-800 border-gray-300';
+            default:
+                return 'bg-white text-gray-800 border-gray-300';
         }
     };
 
     return (
-        <div>
-            <h1>Adivina la Palabra</h1>
-            <div className="tablero">
-                {Array.from({ length: 6 }, (_, rowIndex) => (
-                    <div key={rowIndex} className="fila">
-                        {Array.from({ length: longitud }, (_, colIndex) => {
-                            const intento = intentos[rowIndex];
-                            const letra = intento ? intento.palabra[colIndex] : (rowIndex === intentos.length ? intentoActual[colIndex] || '' : '');
-                            const estado = intento ? intento.resultado[colIndex] : '';
-                            return (
-                                <div key={colIndex} className="celda" style={{ backgroundColor: getColor(estado) }}>
-                                    {letra}
-                                </div>
-                            );
-                        })}
-                    </div>
-                ))}
-            </div>
-            {estadoJuego === 'jugando' && (
-                <div>
-                    <input
-                        type="text"
-                        value={intentoActual}
-                        onChange={(e) => setIntentoActual(e.target.value.toUpperCase())}
-                        maxLength={longitud}
-                        placeholder={`Ingresa tu intento de ${longitud} letras`}
-                    />
-                    <button onClick={handleSubmitIntento}>Adivinar</button>
+        <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
+            <section className="bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border border-white/60 p-8">
+                <h1 className="text-4xl font-extrabold bg-gradient-to-r from-indigo-700 via-indigo-500 to-fuchsia-500 bg-clip-text text-transparent mb-6">Adivina la Palabra</h1>
+                <div className="mb-6 text-gray-600">Intentos disponibles: 6 • Longitud: {longitud}</div>
+                <div className="flex flex-col gap-2 items-center mb-6">
+                    {Array.from({ length: 6 }, (_, rowIndex) => (
+                        <div key={rowIndex} className="flex gap-2">
+                            {Array.from({ length: longitud }, (_, colIndex) => {
+                                const intento = intentos[rowIndex];
+                                const letra = intento
+                                    ? intento.palabra[colIndex]
+                                    : rowIndex === intentos.length
+                                        ? intentoActual[colIndex] || ''
+                                        : '';
+                                const estado = intento ? intento.resultado[colIndex] : '';
+                                return (
+                                    <div
+                                        key={colIndex}
+                                        className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl border font-bold text-xl sm:text-2xl flex items-center justify-center tracking-widest uppercase ${getCellClasses(estado)}`}
+                                    >
+                                        {letra}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ))}
                 </div>
-            )}
-            {estadoJuego === 'ganado' && <h2>¡Ganaste! Redirigiendo...</h2>}
-            {estadoJuego === 'perdido' && <h2>¡Perdiste! La palabra era {palabraSecreta}</h2>}
-        </div>
+                {estadoJuego === 'jugando' && (
+                    <div className="flex flex-wrap gap-3 items-center justify-center">
+                        <input
+                            type="text"
+                            value={intentoActual}
+                            onChange={(e) => setIntentoActual(e.target.value.toUpperCase())}
+                            maxLength={longitud}
+                            placeholder={`Ingresa tu intento de ${longitud} letras`}
+                            className="w-64 rounded-xl border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 px-4 py-2 tracking-widest uppercase"
+                        />
+                        <button
+                            onClick={handleSubmitIntento}
+                            className="rounded-xl bg-indigo-600 text-white px-5 py-2.5 shadow-lg hover:bg-indigo-700 transition"
+                        >
+                            Adivinar
+                        </button>
+                    </div>
+                )}
+                {estadoJuego === 'ganado' && (
+                    <div className="text-center text-green-700 font-semibold text-xl">¡Ganaste! Redirigiendo…</div>
+                )}
+                {estadoJuego === 'perdido' && (
+                    <div className="text-center text-red-600 font-semibold text-xl">¡Perdiste! La palabra era {palabraSecreta}</div>
+                )}
+            </section>
+        </main>
     );
 }
 
