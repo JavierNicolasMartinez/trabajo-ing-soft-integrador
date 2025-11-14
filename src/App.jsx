@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router";
 import CrearJuego from "./components/CrearJuego";
 import TableroJuego from "./components/TableroJuego";
 import "./App.css";

@@ -1,31 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
+import { Navbar } from "../components/Navbar";
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
+    <div className="min-h-screen min-w-screen bg-gradient-to-br from-gray-50 to-gray-100 py-7">
       {/* NAVBAR */}
-      <header className="max-w-6xl mx-auto mb-8">
-        <nav className="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm">
-          <div className="flex items-center gap-8">
-            <div className="text-xl font-extrabold tracking-wider">CARE</div>
-            <ul className="hidden md:flex gap-6 text-sm text-gray-600">
-              <li className="hover:underline cursor-pointer">Platform</li>
-              <li className="hover:underline cursor-pointer">Pricing</li>
-              <li className="hover:underline cursor-pointer">About</li>
-              <li className="hover:underline cursor-pointer">Blog</li>
-            </ul>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button className="text-sm text-gray-600 hover:text-gray-900">
-              Log in
-            </button>
-            <button className="hidden md:inline-block bg-black text-white text-sm px-4 py-2 rounded-full shadow-md hover:opacity-90 transition">
-              Get Started
-            </button>
-          </div>
-        </nav>
+      <header>
+        <Navbar />
       </header>
 
       {/* GRID LAYOUT */}
